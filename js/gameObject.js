@@ -45,12 +45,13 @@ class GameObject {
         }
     }
 
-    checkCollision(otherObject) {
+    checkCollision(otherObject, threshold=60) {
+        // if the object is within the threshold distance return false
         const distance = Math.sqrt(
             Math.pow(this.x - otherObject.x, 2) +
             Math.pow(this.y - otherObject.y, 2)
         );
-        return distance < 60; // Collision threshold
+        return distance < threshold; // Collision threshold
     }
 
     setGame(){
