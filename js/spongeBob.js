@@ -1,5 +1,5 @@
 class Spongebob extends GameObject {
-    constructor(canvas) {
-        super('../assets/images/sponge.png', canvas);
+    constructor(canvas, squid) {
+        super('../assets/images/sponge.png', canvas, squid);
     }
 }

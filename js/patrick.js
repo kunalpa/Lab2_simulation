@@ -1,5 +1,5 @@
 class Patrick extends GameObject {
-    constructor(canvas) {
-        super('../assets/images/patrick.png', canvas);
+    constructor(canvas, squid) {
+        super('../assets/images/patrick.png', canvas, squid);
     }
 }
