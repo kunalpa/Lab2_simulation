@@ -1,12 +1,18 @@
 class Model {
     constructor(canvas) {
         this.canvas = canvas;
-        this.squid = new Squidward(canvas);
-        this.sponge = new Spongebob(canvas);
-        this.star = new Patrick(canvas)
-
+        this.squid;
+        this.sponge;
+        this.star;
+        this.loadObjects();
         this.restartGame();
         this.loadImages();
+    }
+
+    loadObjects() {
+        this.squid = new Squidward(canvas);
+        this.sponge = new Spongebob(canvas, this.squid);
+        this.star = new Patrick(canvas, this.squid);
     }
 
     loadImages() {
@@ -18,6 +24,7 @@ class Model {
     updatePositions() {
         this.sponge.updatePosition();
         this.star.updatePosition();
+        this.squid.updatePosition();
 
         // Check for collisions
         if (this.star.checkCollision(this.squid) || this.sponge.checkCollision(this.squid)) {

@@ -1,12 +1,12 @@
 class GameObject {
-    constructor(imageSrc, canvas) {
+    constructor(imageSrc, canvas, squid_ref=NaN) {
         this.x;
         this.y;
-        this.x_next;
-        this.y_next;
         this.image = new Image();
         this.image.src = imageSrc;
         this.canvas = canvas;
+        this.squid_ref = squid_ref;
+        this.speed = 2;
 
         this.width = 100;
         this.height = 100;
@@ -17,14 +17,32 @@ class GameObject {
     }
 
     updatePosition() {
-        if(this.x + this.x_next >= this.canvas.width - 90 || this.x + this.x_next < 0) {
-            this.x_next = -this.x_next;
+        // this is a non-squidward game object
+        var dx = this.squid_ref.x - this.x;
+        var dy = this.squid_ref.y - this.y;
+        var angle = Math.atan2(dy, dx);
+        var newX = this.x + Math.cos(angle) * this.speed;
+        var newY = this.y + Math.sin(angle) * this.speed;
+
+        // bounce logic
+        if (newX <= 0) {
+            this.x = 0;
+            this.speed = -this.speed;
+        } else if (newX + this.width >= this.canvas.width) {
+            this.x = this.canvas.width - this.width;
+            this.speed = -this.speed;
+        } else {
+            this.x = newX;
         }
-        if(this.y + this.y_next >= this.canvas.height - 90 || this.y + this.y_next < 0) {
-            this.y_next = -this.y_next;
+        if (newY <= 0) {
+            this.y = 0;
+            this.speed = -this.speed;
+        } else if (newY + this.height >= this.canvas.height) {
+            this.y = this.canvas.height - this.height;
+            this.speed = -this.speed;
+        } else {
+            this.y = newY;
         }
-        this.x += this.x_next;
-        this.y += this.y_next;
     }
 
     checkCollision(otherObject) {
@@ -38,7 +56,5 @@ class GameObject {
     setGame(){
         this.x = Math.random() * this.canvas.width;
         this.y = Math.random() * this.canvas.height;
-        this.x_next = (Math.random() - 0.5) * 10;
-        this.y_next = (Math.random() - 0.5) * 10;
     }
 }
