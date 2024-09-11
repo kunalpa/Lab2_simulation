@@ -1,18 +1,21 @@
 class Model {
     constructor(canvas) {
         this.canvas = canvas;
+        this.hearts = 3;
         this.squid;
-        this.sponge;
-        this.star;
+        this.enemies = [];
         this.loadObjects();
         this.restartGame();
         this.loadImages();
+        this.currentTime = 0;
+        this.previousTime = 0;
+        this.timeDelay = 200;
     }
 
     loadObjects() {
         this.squid = new Squidward(canvas);
-        this.sponge = new Spongebob(canvas, this.squid);
-        this.star = new Patrick(canvas, this.squid);
+        this.enemies.push(new Spongebob(canvas, this.squid));
+        this.enemies.push(new Patrick(canvas, this.squid));
     }
 
     loadImages() {
@@ -22,31 +25,49 @@ class Model {
     }
 
     updatePositions() {
-        this.sponge.updatePosition();
-        this.star.updatePosition();
+        // Update the positions of each enemy and adding a new enemy at a certain time interval
+        this.currentTime++;
+        if(this.currentTime-this.previousTime > this.timeDelay){
+            this.previousTime = this.currentTime;
+            if(Math.random() < 0.5) {
+                this.enemies.push(new Spongebob(canvas, this.squid));
+            } else {
+                this.enemies.push(new Patrick(canvas, this.squid));
+            }
+            this.enemies[this.enemies.length-1].setGame();
+        }
+        
+        // update each enemy's position
+        for(let i=0; i < this.enemies.length; i++){
+            this.enemies[i].updatePosition();
+        }
+
         this.squid.updatePosition();
 
         // Check for collisions
-        if (this.star.checkCollision(this.squid) || this.sponge.checkCollision(this.squid)) {
-            this.hearts--;
-            if (this.hearts <= 0) {
-                // Will change this in the future
-                // For now, just resets the hearts
-                this.restartGame();
+        for(let i=0; i < this.enemies.length; i++){
+            if(this.enemies[i].checkCollision(this.squid)) {
+                this.hearts--;
+                if (this.hearts <= 0) {
+                    // Will change this in the future
+                    // For now, just resets the hearts
+                    this.restartGame();
+                }
+                this.resetGame();
             }
-            this.resetGame();
         }
     }
 
     resetGame() {
+        this.currentTime = 0;
+        this.previousTime = 0;
         this.squid.setGame();
-        this.sponge.setGame();
-        while (this.sponge.checkCollision(this.squid) || this.sponge.x >= this.canvas.width - 90 || this.sponge.y >= this.canvas.height - 90) {
-            this.sponge.setGame();
-        }
-        this.star.setGame();
-        while (this.star.checkCollision(this.squid) || this.star.x >= this.canvas.width - 90 || this.star.y >= this.canvas.height - 90) {
-            this.star.setGame();
+        this.enemies = this.enemies.slice(0, 2);
+        for(let i=0; i<this.enemies.length; i++){
+            this.enemies[i].setGame();
+            while (this.enemies[i].checkCollision(this.squid, 200) || this.enemies[i].x >= this.canvas.width - 90 || this.enemies[i].y >= this.canvas.height - 90) {
+                this.enemies[i].setGame();
+            }
         }
     }
 
