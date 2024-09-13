@@ -5,7 +5,7 @@ import numpy as np
 '''
 Takes an image and runs a dfs on the four corners to remove white-ish backgrounds.
 '''
-def remove_outline(pixel_matrix, x, y):
+def removeOutline(pixel_matrix, x, y):
     point_stack = [[0, 0], [y-1, x-1], [0, x-1], [y-1, 0]]
     while point_stack:
         row, col = point_stack.pop()
@@ -35,10 +35,8 @@ def convertImage(file_name):
             r, g, b, a = image_np[i, j]
             pixel_matrix[i, j] = (r, g, b, a)
 
-    # run dfs to remove connected whitepixels outside of character
-    remove_outline(pixel_matrix, x, y)
+    removeOutline(pixel_matrix, x, y)
 
-    # convert back to np array that can be converted to a new image
     squashed_image = np.zeros((n, m, 4), dtype=np.uint8)
     for i in range(n):
         for j in range(m):

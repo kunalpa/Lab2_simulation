@@ -6,16 +6,16 @@ window.onload = function () {
     requestAnimationFrame(mainLoop);
 
     function mainLoop() {
-        update_model();
-        update_view(model);
+        updateModel();
+        updateView(model);
         requestAnimationFrame(mainLoop);
     }
 
-    function update_model() {
+    function updateModel() {
         model.updatePositions();
     }
 
-    function update_view(model) {
+    function updateView(model) {
         view.render(model);
     }
 }
