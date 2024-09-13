@@ -21,37 +21,36 @@ class GameObject {
         var dx = this.squid_ref.x - this.x;
         var dy = this.squid_ref.y - this.y;
         var angle = Math.atan2(dy, dx);
-        var newX = this.x + Math.cos(angle) * this.speed;
-        var newY = this.y + Math.sin(angle) * this.speed;
+        var next_x = this.x + Math.cos(angle) * this.speed;
+        var next_y = this.y + Math.sin(angle) * this.speed;
 
         // bounce logic
-        if (newX <= 0) {
+        if (next_x <= 0) {
             this.x = 0;
             this.speed = -this.speed;
-        } else if (newX + this.width >= this.canvas.width) {
+        } else if (next_x + this.width >= this.canvas.width) {
             this.x = this.canvas.width - this.width;
             this.speed = -this.speed;
         } else {
-            this.x = newX;
+            this.x = next_x;
         }
-        if (newY <= 0) {
+        if (next_y <= 0) {
             this.y = 0;
             this.speed = -this.speed;
-        } else if (newY + this.height >= this.canvas.height) {
+        } else if (next_y + this.height >= this.canvas.height) {
             this.y = this.canvas.height - this.height;
             this.speed = -this.speed;
         } else {
-            this.y = newY;
+            this.y = next_y;
         }
     }
 
     checkCollision(otherObject, threshold=60) {
-        // if the object is within the threshold distance return false
         const distance = Math.sqrt(
             Math.pow(this.x - otherObject.x, 2) +
             Math.pow(this.y - otherObject.y, 2)
         );
-        return distance < threshold; // Collision threshold
+        return distance < threshold;
     }
 
     setGame(){

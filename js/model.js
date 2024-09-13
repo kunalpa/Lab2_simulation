@@ -7,9 +7,9 @@ class Model {
         this.loadObjects();
         this.restartGame();
         this.loadImages();
-        this.currentTime = 0;
-        this.previousTime = 0;
-        this.timeDelay = 200;
+        this.current_time = 0;
+        this.previous_time = 0;
+        this.time_delay = 200;
     }
 
     loadObjects() {
@@ -20,15 +20,15 @@ class Model {
 
     loadImages() {
         // will add to this next assignment
-        this.heartImg = new Image();
-        this.heartImg.src = '../assets/images/heart.png';
+        this.heart_img = new Image();
+        this.heart_img.src = '../resources/images/heart.png';
     }
 
     updatePositions() {
         // Update the positions of each enemy and adding a new enemy at a certain time interval
-        this.currentTime++;
-        if(this.currentTime-this.previousTime > this.timeDelay){
-            this.previousTime = this.currentTime;
+        this.current_time++;
+        if(this.current_time-this.previous_time > this.time_delay){
+            this.previous_time = this.current_time;
             if(Math.random() < 0.5) {
                 this.enemies.push(new Spongebob(canvas, this.squid));
             } else {
@@ -59,8 +59,8 @@ class Model {
     }
 
     resetGame() {
-        this.currentTime = 0;
-        this.previousTime = 0;
+        this.current_time = 0;
+        this.previous_time = 0;
         this.squid.setGame();
         this.enemies = this.enemies.slice(0, 2);
         for(let i=0; i<this.enemies.length; i++){
